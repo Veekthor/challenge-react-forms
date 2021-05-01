@@ -4,10 +4,47 @@ describe("Sign Up", () => {
     cy.visit("/");
     cy.fixture("persons.json").as("persons");
   });
+
+  it("Checks if page loaded properly", () => {
+    cy.contains("Sign Up").should("exist");
+    cy.contains("People").should("exist");
+    const checkInputs = (n, label, name, placeholder) => {
+      cy.get(`form > div:nth-child(${n})`)
+        .should("exist")
+        .should("include.text", label);
+      cy.get(`form > div:nth-child(${n}) input[name="${name}"]`)
+        .invoke("attr", "placeholder")
+        .should("equal", placeholder);
+      cy.get(`form > div:nth-child(${n}) .red`).should("exist");
+    };
+
+    checkInputs(1, "Name", "name", "Pat Smith");
+    checkInputs(2, "Email", "email", "pat@smith.com");
+    checkInputs(3, "Age", "age", "33");
+    checkInputs(4, "Phone Number", "phoneNumber", "800-555-1212");
+    checkInputs(5, "Password", "password", "Str0ngP@ssword~");
+    checkInputs(6, "Homepage", "homepage", "https://smith.com/pat");
+
+    cy.get('[type="submit"')
+      .should("be.disabled")
+      .invoke("val")
+      .should("equal", "Submit");
+
+    cy.contains("People").should("exist");
+    const checkTableHeaders = (n, value) => cy.get(`#people-table > thead > tr > th:nth-child(${n})`).should("have.text", value);
+    checkTableHeaders(1, "Name")
+    checkTableHeaders(2, "Email")
+    checkTableHeaders(3, "Age")
+    checkTableHeaders(4, "Phone")
+    checkTableHeaders(5, "Homepage")
+
+    cy.get("#people-table > tbody").should("not.be.visible")
+  });
+
   it("Adds a person to the list", () => {
     cy.get("@persons").then((persons) => {
       const [person] = persons;
-      cy.enterPerson(person)
+      cy.enterPerson(person);
 
       cy.get("[type=submit]")
         .should("not.be.disabled")
