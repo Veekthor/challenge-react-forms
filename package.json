@@ -4,6 +4,7 @@
   "author": "David Guttman <david@guttman.io> (http://davidguttman.com/)",
   "devDependencies": {
     "cypress": "^7.1.0",
+    "cypress-wait-until": "^1.7.1",
     "react-scripts": "0.9.5"
   },
   "dependencies": {

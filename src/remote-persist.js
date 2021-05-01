@@ -198,7 +198,7 @@ module.exports = class extends React.Component {
         <h1>People</h1>
 
         <div>
-          <table class="f6 w-100 mw8 center" cellspacing="0">
+          <table class="f6 w-100 mw8 center" id="people-table" cellspacing="0">
             <thead>
               <tr>
                 <th class="fw6 bb b--black-20 tl pb3 pr3 bg-white">Name</th>
@@ -212,7 +212,7 @@ module.exports = class extends React.Component {
           {this.state.people.map((person, i) => {
             const {name, email, age, phoneNumber, homepage} = person
             return (
-              <tr key={email}>
+              <tr key={email} data-email={email}>
                 <td class="pv3 pr3 bb b--black-20">{name}</td>
                 <td class="pv3 pr3 bb b--black-20">{email}</td>
                 <td class="pv3 pr3 bb b--black-20">{age}</td>
