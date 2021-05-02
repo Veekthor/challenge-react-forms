@@ -87,6 +87,14 @@ describe("Sign Up", () => {
 
     const checkErrorMsg = (n, expectedVal) => cy.get(`form > div:nth-child(${n}) > div`).should("have.text", expectedVal)
 
+    it("shows error when name input is empty", () => {
+      cy.get('[name="name"]')
+        .clear()
+        .blur();
+      
+      checkErrorMsg(1, "Name Required")
+    })
+
     context("For email input", () => {
       it("shows error when email input is empty", () => {
         cy.get('[name="email"]')
