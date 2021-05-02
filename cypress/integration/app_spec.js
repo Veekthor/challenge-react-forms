@@ -72,4 +72,92 @@ describe("Sign Up", () => {
       checkTableValue(person.email, person.homepage, 4);
     });
   });
+  // when each input is wrong
+  context("invalid Input", () => {
+    beforeEach(() => {
+      cy.get("@persons").then((persons) => {
+        const [person] = persons;
+        cy.enterPerson(person)
+      })
+    })
+
+    afterEach(() => {
+      cy.get('[type="submit"]').should("be.disabled")
+    })
+
+    const checkErrorMsg = (n, expectedVal) => cy.get(`form > div:nth-child(${n}) > div`).should("have.text", expectedVal)
+
+    context("For age input", () => {
+      it("shows error when age input is empty after blur", () => {
+        cy.get('[name="age"]')
+          .clear()
+          .blur();
+        
+        checkErrorMsg(3, "Invalid Age")
+      })
+
+      it("shows error when age input is zero", () => {
+        cy.get('[name="age"]')
+          .clear()
+          .type("0")
+          .blur();
+        
+        checkErrorMsg(3, "Invalid Age")
+      })
+
+      it("shows error when age input is less than zero", () => {
+        cy.get('[name="age"]')
+          .clear()
+          .type("-2")
+          .blur();
+        
+        checkErrorMsg(3, "Invalid Age")
+      })
+
+      it("shows error when age input is 200", () => {
+        cy.get('[name="age"]')
+          .clear()
+          .type("200")
+          .blur();
+        
+        checkErrorMsg(3, "Invalid Age")
+      })
+
+      it("shows error when age input is greater than 200", () => {
+        cy.get('[name="age"]')
+          .clear()
+          .type("300")
+          .blur();
+        
+        checkErrorMsg(3, "Invalid Age")
+      })
+
+      it("shows error when a non decimal age input includes a special character except a leading + or -", () => {
+        cy.get('[name="age"]')
+          .clear()
+          .type("30~0")
+          .blur();
+        
+        checkErrorMsg(3, "Invalid Age")
+      })
+
+      it("shows error when age input includes more than one period (.)", () => {
+        cy.get('[name="age"]')
+          .clear()
+          .type("30.0.")
+          .blur();
+        
+        checkErrorMsg(3, "Invalid Age")
+      })
+
+      it("shows error when age input includes a white space", () => {
+        cy.get('[name="age"]')
+          .clear()
+          .type("30.0 ")
+          .blur();
+        
+        checkErrorMsg(3, "Invalid Age")
+      })
+    })
+  })
 });
