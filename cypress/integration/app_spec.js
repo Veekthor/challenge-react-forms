@@ -289,5 +289,50 @@ describe("Sign Up", () => {
         checkErrorMsg(5, "Weak Password")
       })
     })
+
+    context("For homepage input", () => {
+      it("shows error when homepage input is empty", () => {
+        cy.get('[name="homepage"]')
+          .clear()
+          .blur();
+        
+        checkErrorMsg(6, "Invalid URL")
+      })
+
+      it("shows error when homepage input top level domain is less than 2 letters", () => {
+        cy.get('[name="homepage"]')
+          .clear()
+          .type("https://johndoe.c")
+          .blur();
+        
+        checkErrorMsg(6, "Invalid URL")
+      })
+
+      it("shows error when homepage input does not start with http:// or https://", () => {
+        cy.get('[name="homepage"]')
+          .clear()
+          .type("htt://johndoe.com")
+          .blur();
+        
+        checkErrorMsg(6, "Invalid URL")
+
+        cy.get('[name="homepage"]')
+          .clear()
+          .type("https:/johndoe.com")
+          .blur();
+        
+        checkErrorMsg(6, "Invalid URL")
+      })
+
+      it("shows error when homepage input domain a special character", () => {
+        cy.get('[name="homepage"]')
+          .clear()
+          .type("http://jo#hndoe.com")
+          .blur();
+        
+        checkErrorMsg(6, "Invalid URL")
+      })
+    })
+
   })
 });
