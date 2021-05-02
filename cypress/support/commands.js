@@ -27,32 +27,32 @@
 import 'cypress-wait-until';
 
 Cypress.Commands.add("enterPerson", person => {
-  cy.get("[name=name]")
+  cy.get('[name="name"]')
     .clear()
     .type(person.name)
     .invoke("val")
     .should("equal", person.name);
-  cy.get("[name=email]")
+  cy.get('[name="email"]')
     .clear()
     .type(person.email)
     .invoke("val")
     .should("equal", person.email);
-  cy.get("[name=age]")
+  cy.get('[name="age"]')
     .clear()
     .type(person.age)
     .invoke("val")
     .should("equal", person.age);
-  cy.get("[name=phoneNumber]")
+  cy.get('[name="phoneNumber"]')
     .clear()
     .type(person.phoneNumber)
     .invoke("val")
     .should("equal", person.phoneNumber);
-  cy.get("[name=password]")
+  cy.get('[name="password"]')
     .clear()
     .type(person.password)
     .invoke("val")
     .should("equal", person.password);
-  cy.get("[name=homepage]")
+  cy.get('[name="homepage"]')
     .clear()
     .type(person.homepage)
     .invoke("val")
