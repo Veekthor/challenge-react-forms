@@ -242,6 +242,70 @@ describe("Sign Up", () => {
       })
     })
 
+    context("For phone number input", () => {
+      it("shows error when Phone Number input is empty", () => {
+        cy.get('[name="phoneNumber"]')
+          .clear()
+          .blur();
+        
+        checkErrorMsg(4, "Invalid Phone Number")
+      })
+
+      it("shows error when Phone Number input contains a letter", () => {
+        cy.get('[name="phoneNumber"]')
+          .clear()
+          .type("333333a")
+          .blur();
+        
+        checkErrorMsg(4, "Invalid Phone Number")
+      })
+
+      it("shows error when Phone Number input is less than 6 characters", () => {
+        cy.get('[name="phoneNumber"]')
+          .clear()
+          .type("33333")
+          .blur();
+        
+        checkErrorMsg(4, "Invalid Phone Number")
+      })
+
+      it("shows error when Phone Number input is greater than 12 characters", () => {
+        cy.get('[name="phoneNumber"]')
+          .clear()
+          .type("333333333333")
+          .blur();
+        
+        checkErrorMsg(4, "Invalid Phone Number")
+      })
+
+      it("shows error when Phone Number input contains a leading special character except + and -", () => {
+        cy.get('[name="phoneNumber"]')
+          .clear()
+          .type("*333-333-333")
+          .blur();
+        
+        checkErrorMsg(4, "Invalid Phone Number")
+      })
+
+      it("shows error when hypenated Phone Number input does not end with 4 numbers", () => {
+        cy.get('[name="phoneNumber"]')
+          .clear()
+          .type("3333-333-333")
+          .blur();
+        
+        checkErrorMsg(4, "Invalid Phone Number")
+      })
+
+      it("shows error when hypenated Phone Number input have less than 3 numbers in each section", () => {
+        cy.get('[name="phoneNumber"]')
+          .clear()
+          .type("333-33-3333")
+          .blur();
+        
+        checkErrorMsg(4, "Invalid Phone Number")
+      })
+    })
+
     context("For password input", () => {
       it("shows error when password input is empty", () => {
         cy.get('[name="password"]')
