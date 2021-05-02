@@ -87,6 +87,80 @@ describe("Sign Up", () => {
 
     const checkErrorMsg = (n, expectedVal) => cy.get(`form > div:nth-child(${n}) > div`).should("have.text", expectedVal)
 
+    context("For email input", () => {
+      it("shows error when email input is empty after blur", () => {
+        cy.get('[name="email"]')
+          .clear()
+          .blur();
+        
+        checkErrorMsg(2, "Invalid Email")
+      })
+
+      it("shows error when email input value length is greater than 254 after blur", () => {
+        const characters = Array(254).fill("a").join("")
+        cy.get('[name="email"]')
+          .clear()
+          .type(characters + "@gmail.com")
+          .blur();
+        
+        checkErrorMsg(2, "Invalid Email")
+      })
+
+      it("shows error when email input does not include @", () => {
+        cy.get('[name="email"]')
+          .clear()
+          .type("hellogmail.com")
+          .blur();
+        
+        checkErrorMsg(2, "Invalid Email")
+      })
+
+      it("shows error when email input top level domain is less than 2 letters period", () => {
+        cy.get('[name="email"]')
+          .clear()
+          .type("hello@gmail.c")
+          .blur();
+        
+        checkErrorMsg(2, "Invalid Email")
+      })
+
+      it("shows error when email input top level domain includes a special character except period", () => {
+        cy.get('[name="email"]')
+          .clear()
+          .type("hello@gmail.c#om")
+          .blur();
+        
+        checkErrorMsg(2, "Invalid Email")
+      })
+
+      it("shows error when email input domain includes a special character except period", () => {
+        cy.get('[name="email"]')
+          .clear()
+          .type("hello@gma#il.co")
+          .blur();
+        
+        checkErrorMsg(2, "Invalid Email")
+      })
+
+      it("shows error when email input domain includes two @ symbols", () => {
+        cy.get('[name="email"]')
+          .clear()
+          .type("hell@o@gmail.co")
+          .blur();
+        
+        checkErrorMsg(2, "Invalid Email")
+      })
+
+      it("shows error when email input starts with @ symbol", () => {
+        cy.get('[name="email"]')
+          .clear()
+          .type("@gmail.co")
+          .blur();
+        
+        checkErrorMsg(2, "Invalid Email")
+      })
+    })
+
     context("For age input", () => {
       it("shows error when age input is empty after blur", () => {
         cy.get('[name="age"]')
