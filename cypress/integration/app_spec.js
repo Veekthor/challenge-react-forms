@@ -88,7 +88,7 @@ describe("Sign Up", () => {
     const checkErrorMsg = (n, expectedVal) => cy.get(`form > div:nth-child(${n}) > div`).should("have.text", expectedVal)
 
     context("For email input", () => {
-      it("shows error when email input is empty after blur", () => {
+      it("shows error when email input is empty", () => {
         cy.get('[name="email"]')
           .clear()
           .blur();
@@ -96,7 +96,7 @@ describe("Sign Up", () => {
         checkErrorMsg(2, "Invalid Email")
       })
 
-      it("shows error when email input value length is greater than 254 after blur", () => {
+      it("shows error when email input value length is greater than 254", () => {
         const characters = Array(254).fill("a").join("")
         cy.get('[name="email"]')
           .clear()
@@ -162,7 +162,7 @@ describe("Sign Up", () => {
     })
 
     context("For age input", () => {
-      it("shows error when age input is empty after blur", () => {
+      it("shows error when age input is empty", () => {
         cy.get('[name="age"]')
           .clear()
           .blur();
@@ -231,6 +231,62 @@ describe("Sign Up", () => {
           .blur();
         
         checkErrorMsg(3, "Invalid Age")
+      })
+    })
+
+    context("For password input", () => {
+      it("shows error when password input is empty", () => {
+        cy.get('[name="password"]')
+          .clear()
+          .blur();
+        
+        checkErrorMsg(5, "Weak Password")
+      })
+      
+      it("shows error when password input is less than 8 characters", () => {
+        const characters = Array(7).fill("a").join("")
+        cy.get('[name="password"]')
+          .clear()
+          .type(characters)
+          .blur();
+        
+        checkErrorMsg(5, "Weak Password")
+      })
+      
+      it("shows error when password input does not include an upper case letter", () => {
+        cy.get('[name="password"]')
+          .clear()
+          .type("1@qqqww/")
+          .blur();
+        
+        checkErrorMsg(5, "Weak Password")
+      })
+      
+      it("shows error when password input does not include a lower case letter", () => {
+        cy.get('[name="password"]')
+          .clear()
+          .type("1@1111Q1/")
+          .blur();
+        
+        checkErrorMsg(5, "Weak Password")
+      })
+      
+      it("shows error when password input does not include a number", () => {
+        cy.get('[name="password"]')
+          .clear()
+          .type("w@qqqWw/")
+          .blur();
+        
+        checkErrorMsg(5, "Weak Password")
+      })
+      
+      it("shows error when password input does not include a symbol", () => {
+        cy.get('[name="password"]')
+          .clear()
+          .type("11qqqWwW")
+          .blur();
+        
+        checkErrorMsg(5, "Weak Password")
       })
     })
   })
